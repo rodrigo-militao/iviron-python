@@ -34,6 +34,11 @@ def chart_data():
         print('Error: chart_data_path nao encontrado')
     return data
 
+@app.route('/video_path')
+def video_path():
+    video_path = Utils.getConfigData()['video_data_path']
+    return {'path': video_path}
+
 @app.route('/set_config', methods=['POST'])
 def set_config():
     data = request.json['data']

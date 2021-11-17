@@ -127,37 +127,53 @@
         <!-- Termina tab contagem -->
 
         <!-- Começa tab gravacao -->
-          <div id="gravacao" class="tab-page">
+          <div id="gravacao" class="tab-page"  style="margin: 16px 8px;">
             <div class="flex">
 
-              <div>
-                <img src="{{ url_for('video_feed') }}" width="50%">
+              <div style="width: 60%">
+                <div id="live_video">
+                  <p>Ao vivo</p>
+                  <img src="{{ url_for('video_feed') }}" width="80%" height="100%">
+                </div>
+
+                <div id="playback_video_div" style="display: none;">
+                  <p>Data: <span id="recording_date"></span> as <span id="recording_time"></span></p>
+                  <video width="80%" height="100%" muted controls id="playback_video" allowfullscreen="false"></video>
+                </div>
               </div>
               
-              <div style="margin: 16px 8px;" class="flex">
-                <div style="margin-right: 47px;">
-                  <input type="date" placeholder="dd-mm-yyyy" id="playback_date" lang="pt-BR" />
+              <div>
+                <div style="margin: 16px 8px;" class="flex">
+                  <div style="margin-right: 8px;">
+                    <input type="date" placeholder="dd-mm-yyyy" id="playback_date" lang="pt-BR" />
+                  </div>
+    
+                  <div>
+                    <input type="time" id="playback_time" step="60" value="07:00" min="00:00" max="23:59" />
+                  </div>
                 </div>
-  
-                <div>
-                  <input type="time" id="playback_time" step="60" value="07:00" min="00:00" max="23:59" />
+
+                <div style="margin: 16px 8px;" class="flex">
+                  <div style="margin-right: 8px;">
+                    <button id="ver_ao_vivo">Ver ao vivo</button>
+                  </div>
+    
+                  <div>
+                    <button id="ver_playback">Ver playback</button>
+                  </div>
                 </div>
               </div>
+
 
             </div>
 
-            <div style="margin: 16px 8px;">
+            <!-- <div style="margin: 16px 8px;">
               <p>Caminho do vídeo: </p>
               <p id="path"></p>
             </div>
 
             <button id='assistir_video'>Assistir vídeo</button>
-            <button id='download_video'>Download do vídeo</button>
-
-            <!-- <video width="320" height="240" muted controls id="playback_video" style="margin: 8px 8px;" allowfullscreen="false">
-            </video> -->
-            <!-- <img src="" alt="Ao vivo" id="live_image" /> -->
-
+            <button id='download_video'>Download do vídeo</button> -->
 
           </div>
         <!-- Termina tab gravacao -->
@@ -274,7 +290,7 @@
     <script src="./assets/js/moment.js"></script>
     <script src="./assets/js/script.js"></script>
     <script src="./assets/js/graficos.js"></script>
-    <!-- <script src="./assets/js/playback.js"></script> -->
+    <script src="./assets/js/playback.js"></script>
     <script src="./assets/js/exportToCsv.js"></script>
     <script src="./assets/js/audiencia.js"></script>
     <script src="./assets/js/config.js"></script>
