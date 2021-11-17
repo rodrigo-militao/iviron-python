@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="pt-br">
+
+    <!-- Styles-->
+    <link rel="stylesheet" href="./assets/css/styles.css">
+
+    <title>Inviron Camera</title>
+
+
+   <!-- ChartJS -->
+   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+   <script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div id="header" class="bordered">
+      <div class="flex space-between">
+
+        <div class="">
+          <img src="assets/img/logo.png" class="img-logo" width="210" height="70">
+        </div>
+
+        <div class="">
+          <p class="text-center">CAMERA RV</p>
+          <p>Localização: <span id="localizacao">{{config.localizacao}}</span></p>
+          <p>Cliente: <span id="cliente">{{config.cliente}}</span></p>
+        </div>
+
+        <div class="">
+          <p>Data: <span id="data">19/08/2021</span></p>
+          <p>Hora: <span id="hora">11:50</span></p>
+          <p>Tag: <span id="tag">{{config.tag}}</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex">
+
+      <div id="left" class="bordered">
+        <button class="button-tab" target="contagem">
+          Contagem Pessoas
+        </button>
+        <button class="button-tab" target="gravacao">
+          Gravação
+        </button>
+        <button class="button-tab" target="audiencia">
+          Audiência
+        </button>
+        <button class="button-tab" target="config">
+          Configurações
+        </button>
+  
+        <div class="end">
+          <button id="logoutButton" class="button-tab" onclick="window.location.href = '/logout'">
+            Logout
+          </button>
+        </div>
+      </div>
+  
+  
+      <div id="right" class="bordered">
+        <!-- Começa tab contagem -->
+          <div id="contagem" class="tab-page tab-initial">
+            <div>
+              <!--
+                <div class="camera_container">
+                  <video id="camera" autoplay class="camera"></video>
+                </div>
+              --> 
+
+              <div class="chart_options">
+                <div class="flex chart_time align-center"style="margin: 16px 8px;">
+                  <label for="start_time_input" style="margin-right: 8px;">De</label>
+                  <input type="date" id="start_time_input" class="time_input"  />
+                  
+                  <label for="end_time_input" style="margin-right: 8px; margin-left: 16px;">Até</label>
+                  <input type="date" id="end_time_input"  class="time_input"  />
+                </div>
+
+                <div class="flex chart_type" style="margin: 16px 0;">
+                  <input type="radio" id="periodo_dia" name="chart_period" value="dia" checked="true">
+                  <label for="periodo_dia">Dia</label>
+
+                  <input type="radio" id="periodo_mes" name="chart_period" value="mes">
+                  <label for="periodo_mes">Mês</label>
+
+                  <input type="radio" id="periodo_ano" name="chart_period" value="ano">
+                  <label for="periodo_ano">Ano</label>
+                </div>
+
+                <div id="filter_dia" class="" style="margin: 16px 8px;">
+                  <div style="margin: 16px 0;">
+                    <label for="dia_input" style="margin-right: 8px;">Visualização</label>
+                  </div>
+                  <div>
+                    <select id="dia_input">
+                      <option value="min" selected>1 Minuto</option>
+                      <option value="half">30 Minutos</option>
+                      <option value="hour">1 Hora</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="flex chart_type" style="margin: 16px 0;">
+                  <input type="radio" id="bar" name="chart_type" value="bar" checked="true">
+                  <label for="bar">Barra</label>
+
+                  <input type="radio" id="line" name="chart_type" value="line">
+                  <label for="line">Linha</label>
+                </div>
+
+                <div class="flex" style="margin: 8px;">
+                  <button id="update_chart">Atualizar</button>
+                </div>
+              </div>
+
+              <canvas id="myChart" width="200" height="100"></canvas>
+
+            </div>
+          </div>
+        <!-- Termina tab contagem -->
+
+        <!-- Começa tab gravacao -->
+          <div id="gravacao" class="tab-page">
+            <div class="flex">
+
+              <div>
+                <img src="{{ url_for('video_feed') }}" width="50%">
+              </div>
+              
+              <div style="margin: 16px 8px;" class="flex">
+                <div style="margin-right: 47px;">
+                  <input type="date" id="playback_date" lang="pt-BR" />
+                </div>
+  
+                <div>
+                  <input type="time" id="playback_time" step="60" value="07:00" min="00:00" max="23:59" />
+                </div>
+              </div>
+
+            </div>
+
+            <div style="margin: 16px 8px;">
+              <p>Caminho do vídeo: </p>
+              <p id="path"></p>
+            </div>
+
+            <button id='assistir_video'>Assistir vídeo</button>
+            <button id='download_video'>Download do vídeo</button>
+
+            <!-- <video width="320" height="240" muted controls id="playback_video" style="margin: 8px 8px;" allowfullscreen="false">
+            </video> -->
+            <!-- <img src="" alt="Ao vivo" id="live_image" /> -->
+
+
+          </div>
+        <!-- Termina tab gravacao -->
+
+        <!-- Começa tab audiencia -->
+          <div id="audiencia" class="tab-page">
+            <div style="margin: 8px 8px; width: 100%;align-items: center;" class="flex">
+              <label for="start_time_input_audiencia" style="margin-right: 8px;">De</label>
+              <input type="date" id="start_time_input_audiencia" class="time_input"  />
+              
+              <label for="end_time_input_audiencia" style="margin-right: 8px; margin-left: 16px;">Até</label>
+              <input type="date" id="end_time_input_audiencia"  class="time_input"  />
+            </div>
+            <div style="margin: 0px 8px; width: 100%;align-items: center;justify-content: space-around;" class="flex">
+              <div>
+                <button id="audiencia_reload">Atualizar</button>
+              </div>
+              <div style="margin-right: 47px;">
+                <h2>Relatório</h2>
+              </div>
+
+              <div>
+                <select id="audiencia_select" class="select_audiencia">
+                  <option value="0">Selecione o setor</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="max-height: 250px; overflow-y: auto;">
+              <table id="audiencia_table"></table>
+            </div>
+
+            <div>
+              <canvas id="audiencia_chart" width="200" height="100"></canvas>
+            </div>
+          </div>
+        <!-- Termina tab audiencia -->
+
+        <!-- Começa tab config -->
+        <div id="config" class="tab-page">
+          <!-- <div style="margin: 8px;">
+            <input type="file" id="config_chart_file_input" style="display: none;" accept=".csv" />
+            <input 
+              type="button" 
+              value="Escolher arquivo com os dados do gráfico de contagem de pessoas" 
+              onclick="document.getElementById('config_chart_file_input').click();" 
+            />
+          </div>
+          <div style="margin: 16px 8px;">
+            <input 
+              style="display: none;" 
+              type="file" 
+              id="config_video_file_input" 
+              webkitdirectory 
+              directory
+            />
+            <input 
+              type="button" 
+              value="Escolher pasta com as gravações" 
+              onclick="document.getElementById('config_video_file_input').click();"
+            />
+          </div> -->
+
+          <div style="margin: 16px 8px;" class="flex-column">
+            <label for="config_cliente">Cliente</label>
+            <input 
+              type="text"
+              id="config_cliente"
+              value={{config.cliente}}
+            />
+          </div>
+
+          <div style="margin: 16px 8px;" class="flex-column">
+            <label for="config_localizacao">Localização</label>
+            <input 
+              type="text"
+              id="config_localizacao"
+              value={{config.localizacao}}
+            />
+          </div>
+          <div style="margin: 16px 8px;" class="flex-column">
+            <label for="config_tag">Tag</label>
+            <input 
+              type="text"
+              id="config_tag"
+              value={{config.tag}}
+            />
+          </div>
+
+          <div style="margin: 40px 8px;" class="flex-column">
+            <input 
+              type="button"
+              id="config_save"
+              value="Salvar alterações"
+            />
+          </div>
+        </div>
+        <div style="margin: 16px 8px;">
+          <span id="config_message"></span>
+        </div>
+        <!-- Termina tab config -->
+
+      </div>
+      
+    </div>
+
+
+    <!-- javascript files-->
+    <script src="./assets/js/requisicoes.js"></script>
+    <script src="./assets/js/jquery.js"></script>
+    <!--<script src="./assets/js/jquery-ui/jquery-ui.min.js"></script>-->
+    
+    <script src="./assets/js/moment.js"></script>
+    <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/graficos.js"></script>
+    <!-- <script src="./assets/js/playback.js"></script> -->
+    <script src="./assets/js/audiencia.js"></script>
+    <script src="./assets/js/config.js"></script>
+
+    <script>
+      $("#logoutButton").on('click', function() {
+        window.global.logout()
+      })
+    </script>
+
+</body>
+</html>

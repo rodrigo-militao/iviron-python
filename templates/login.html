@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <title>Inviron Camera Login</title>
+</head>
+<body>
+
+    <center>
+        <div class="">
+            <img src="assets/img/logo.png" class="img-logo" width="210" height="70">
+        </div>
+
+        <form method="POST" action="/login">
+            <div class="form-group" style="margin-bottom: 20px; margin-top: 50px;">
+                <input type="text" name="username" class="form-control" id="username" placeholder="Usuário">
+            </div>
+            <div class="form-group" style="margin-bottom: 50px">
+                <input type="password" name="password" class="form-control" id="password" placeholder="Senha">
+            </div>
+            <button id="btn_logar">
+                Logar
+            </button>
+        </form>
+       <!--  <div>
+            <% if (message) { %>
+                <p style="color: red;">
+                    <%= message %>
+                </p>
+            <% } %>
+        </div> -->
+
+    </center>
+
+
+    <!-- javascript files-->
+    <script src="assets/js/jquery.js"></script>
+    <script>
+        $(document).keypress(function(event) {
+            if (event.keyCode === 13) {
+                $("#btn_logar").click();
+            }
+        })
+    </script>
+    
+</body>
+</html>
