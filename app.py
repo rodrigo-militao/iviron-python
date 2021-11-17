@@ -4,20 +4,16 @@ from Utils import Utils
 
 app = Flask(__name__, template_folder='templates', static_folder='templates/assets')
 
-camera = cv2.VideoCapture(0)
-
 def gen_frames():  
+    camera = cv2.VideoCapture(0)
     while True:
-        success, frame = camera.read()  # read the camera frame
-        if not success:
+        _, frame = camera.read()  # read the camera frame
+        ret, buffer = cv2.imencode('.jpg', frame)
+        if ret == False:
             break
-        else:
-            ret, buffer = cv2.imencode('.jpg', frame)
-            if ret == False:
-                break
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+        frame = buffer.tobytes()
+        yield (b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
 @app.route('/video_feed')
 def video_feed():
@@ -31,7 +27,11 @@ def index():
 @app.route('/chart_data')
 def chart_data():
     chart_data_path = Utils.getConfigData()['chart_data_path']
-    data = Utils.readCSV(chart_data_path)
+    try:
+        data = Utils.readCSV(chart_data_path)
+    except:
+        data = []
+        print('Error: chart_data_path nao encontrado')
     return data
 
 @app.route('/set_config', methods=['POST'])

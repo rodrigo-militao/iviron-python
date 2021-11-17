@@ -5,8 +5,7 @@ let selected
 let each_person_data = []
 
 $(document).ready(() => {
-  start()
-
+  
   const today = new Date().toLocaleDateString()
   const current_month = today.split('/')[1]
   const current_year = today.split('/')[2]
@@ -17,9 +16,20 @@ $(document).ready(() => {
     start()
   })
 
+  $("#end_time_input_audiencia").on('change', function() {
+    start()
+  })
+
+  $("#start_time_input_audiencia").on('change', function() {
+    start()
+  })
+
   $("#audiencia_export").on('click', function() {
     htmlToCSV(new Date().toLocaleDateString() + "_audiencia.csv")
   })
+
+  
+  start()
   
 })
 
