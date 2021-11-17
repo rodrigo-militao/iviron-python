@@ -16,6 +16,10 @@ $(document).ready(() => {
   $("#audiencia_reload").on('click', function(e) {
     start()
   })
+
+  $("#audiencia_export").on('click', function() {
+    htmlToCSV(new Date().toLocaleDateString() + "_audiencia.csv")
+  })
   
 })
 
