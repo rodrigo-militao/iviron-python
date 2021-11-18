@@ -15,7 +15,7 @@ $(document).ready(() => {
 
   function change_playback_src() {
     const video_path_static = "assets/videos"
-    const video_extension = "avi"
+    const video_extension = "mp4"
     
     const selected_date = $("#playback_date").val()
     const selected_time = $("#playback_time").val()
@@ -30,9 +30,9 @@ $(document).ready(() => {
     const video_current_time = Number(minute) >= 30 ? (Number(minute) - 30) * 60 : Number(minute) * 60;
     
     
-    const video_path = `/${video_path_static}/${day}${month}${year}_${hour}${minute}.${video_extension}`
-
+    const video_path = `/${video_path_static}/${year}-${month}-${day}-${hour}${minute}.${video_extension}`
     playback_video.src = video_path
+    playback_video.type = `video/${video_extension}`
     playback_video.load()
     playback_video.play()
   }
