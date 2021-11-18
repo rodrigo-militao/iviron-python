@@ -15,20 +15,25 @@ $(document).ready(() => {
 
   function change_playback_src() {
     const video_path_static = "assets/videos"
+    const video_extension = "avi"
+    
     const selected_date = $("#playback_date").val()
     const selected_time = $("#playback_time").val()
+    const playback_video = document.getElementById('playback_video')
 
+    const day = selected_date.split('-')[2]
+    const month = selected_date.split('-')[1]
+    const year = selected_date.split('-')[0]
     const hour = selected_time.split(":")[0]
     const minute = selected_time.split(":")[1]
     const first_minute_number = minute[0] >= 3 ? 3 : 0
-    const playback_video = document.getElementById('playback_video')
-
     const video_current_time = Number(minute) >= 30 ? (Number(minute) - 30) * 60 : Number(minute) * 60;
     
-      //const video_path = `${video_path_static}/${selected_date}/${hour}/${hour}_${first_minute_number}_${minute}_${minute}_${selected_time}.avi`
-      const video_path = `/${video_path_static}/teste.mp4`
-      playback_video.src = video_path
-      playback_video.load()
-      playback_video.play()  
+    
+    const video_path = `/${video_path_static}/${day}${month}${year}_${hour}${minute}.${video_extension}`
+
+    playback_video.src = video_path
+    playback_video.load()
+    playback_video.play()
   }
 })
