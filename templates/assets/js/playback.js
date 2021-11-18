@@ -14,6 +14,7 @@ $(document).ready(() => {
   })
 
   function change_playback_src() {
+    const video_path_static = "assets/videos"
     const selected_date = $("#playback_date").val()
     const selected_time = $("#playback_time").val()
 
@@ -24,16 +25,10 @@ $(document).ready(() => {
 
     const video_current_time = Number(minute) >= 30 ? (Number(minute) - 30) * 60 : Number(minute) * 60;
     
-    //fetch video path
-    fetch('/video_path')
-    .then(response => response.json())
-    .then(({path}) => {
-      //const video_path = `${path}/${selected_date}/${hour}/${hour}_${first_minute_number}_${minute}_${minute}_${selected_time}.avi`
-      console.log(path)
-      const video_path = `/${path}/teste.avi`
+      //const video_path = `${video_path_static}/${selected_date}/${hour}/${hour}_${first_minute_number}_${minute}_${minute}_${selected_time}.avi`
+      const video_path = `/${video_path_static}/teste.mp4`
       playback_video.src = video_path
       playback_video.load()
-    })
-  
+      playback_video.play()  
   }
 })
