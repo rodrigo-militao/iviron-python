@@ -1,5 +1,5 @@
 let chart_type_selected = 'bar'
-let chart_filter_selected = 'dia'
+let chart_filter_selected = 'hora'
 let chart_filter_dia_selected = 'min'
 var count_chart
 
@@ -16,6 +16,8 @@ $(document).ready(() => {
   $("input[name='chart_period']").on('change', function() {
     const valor = $(this).val()
     chart_filter_selected = valor
+    if(chart_filter_selected == "hora") $("#filter_dia").show()
+    else $("#filter_dia").hide()
     render_count_chart(chart_type_selected)
   })
 
@@ -90,24 +92,8 @@ function render_count_chart (chart_type = 'bar'){
         
         const filtered_by_date_interval = data.filter(e => e.forma == "reta").filter(e => isBetweenDates(new Date(e["dia-horario"])))
 
-        if (chart_filter_selected == 'mes') {
+        if (chart_filter_selected == 'ano') {
           $("select[id='dia_input']").css('display', 'none')
-          filtered_by_date_interval.map(el => {
-            el["dia-horario"] = new Date(el["dia-horario"])
-            const curr_year = el["dia-horario"].getFullYear()
-            const curr_month = formatMonth(el["dia-horario"].getMonth()) + '/' + curr_year
-            let mes_index = chartLabels.indexOf(curr_month)
-            if(mes_index == -1) chartLabels.push(curr_month)
-            mes_index = chartLabels.indexOf(curr_month)
-
-            chartEntradas[mes_index] = (isNaN(Number(chartEntradas[mes_index])) ? 0 : Number(chartEntradas[mes_index])) + Number(el.entrou)
-            chartSaidas[mes_index] = (isNaN(Number(chartSaidas[mes_index])) ? 0 : Number(chartSaidas[mes_index])) + (Number(el.entrou) == 0  ? 1 : 0)
-          })
-
-        }
-        else if (chart_filter_selected == 'ano') {
-          $("select[id='dia_input']").css('display', 'none')
-
           filtered_by_date_interval.map(el => {
             el["dia-horario"] = new Date(el["dia-horario"])
             const curr_year = el["dia-horario"].getFullYear()
@@ -117,7 +103,44 @@ function render_count_chart (chart_type = 'bar'){
 
             chartEntradas[ano_index] = (isNaN(Number(chartEntradas[ano_index])) ? 0 : Number(chartEntradas[ano_index])) + Number(el.entrou)
             chartSaidas[ano_index] = (isNaN(Number(chartSaidas[ano_index])) ? 0 : Number(chartSaidas[ano_index])) + (Number(el.entrou) == 0  ? 1 : 0)
+          })
+
+        }
+        else if (chart_filter_selected == 'mes') {
+          $("select[id='dia_input']").css('display', 'none')
+
+          filtered_by_date_interval.map(el => {
+            el["dia-horario"] = new Date(el["dia-horario"])
+            const curr_year = el["dia-horario"].getFullYear()
+            const curr_date = formatMonth(el["dia-horario"].getMonth()) + '/' + curr_year
+
+            let mes_index = chartLabels.indexOf(curr_date)
+            if(mes_index == -1) chartLabels.push(curr_date)
+            mes_index = chartLabels.indexOf(curr_date)
+
+            chartEntradas[mes_index] = (isNaN(Number(chartEntradas[mes_index])) ? 0 : Number(chartEntradas[mes_index])) + Number(el.entrou)
+            chartSaidas[mes_index] = (isNaN(Number(chartSaidas[mes_index])) ? 0 : Number(chartSaidas[mes_index])) + (Number(el.entrou) == 0  ? 1 : 0)
             debugger
+          })
+
+        }
+        else if (chart_filter_selected == 'dia') {
+          $("select[id='dia_input']").css('display', 'none')
+
+          filtered_by_date_interval.map(el => {
+            el["dia-horario"] = new Date(el["dia-horario"])
+
+            const curr_day = el["dia-horario"].getDate()
+            const curr_month = formatMonth(el["dia-horario"].getMonth())
+            const curr_year = el["dia-horario"].getFullYear()
+            const curr_date = curr_day + '/' + curr_month + '/' + curr_year
+
+            let dia_index = chartLabels.indexOf(curr_date)
+            if(dia_index == -1) chartLabels.push(curr_date)
+            dia_index = chartLabels.indexOf(curr_date)
+
+            chartEntradas[dia_index] = (isNaN(Number(chartEntradas[dia_index])) ? 0 : Number(chartEntradas[dia_index])) + Number(el.entrou)
+            chartSaidas[dia_index] = (isNaN(Number(chartSaidas[dia_index])) ? 0 : Number(chartSaidas[dia_index])) + (Number(el.entrou) == 0  ? 1 : 0)
           })
 
         }
@@ -135,7 +158,8 @@ function render_count_chart (chart_type = 'bar'){
               first_minute_number = minute[0] >= 3 ? 3 : 0
             }
 
-            col_hora = `${time.split("-")[0]} - ${hour}:${first_minute_number}0`
+            //col_hora = `${time.split("-")[0]} - ${hour}:${first_minute_number}0`
+            col_hora = `${time.split("-")[0]} - ${hour}:00`
 
             let time_index = chartLabels.indexOf(chart_filter_dia_selected == 'min' ? time : col_hora)
             if(time_index == -1) chartLabels.push(chart_filter_dia_selected == 'min' ? time : col_hora)

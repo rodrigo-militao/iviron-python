@@ -84,7 +84,10 @@
                 </div>
 
                 <div class="flex chart_type" style="margin: 16px 0;">
-                  <input type="radio" id="periodo_dia" name="chart_period" value="dia" checked="true">
+                  <input type="radio" id="periodo_hora" name="chart_period" value="hora" checked="true">
+                  <label for="periodo_hora">Hora</label>
+                
+                  <input type="radio" id="periodo_dia" name="chart_period" value="dia">
                   <label for="periodo_dia">Dia</label>
 
                   <input type="radio" id="periodo_mes" name="chart_period" value="mes">
@@ -137,7 +140,6 @@
                 </div>
 
                 <div id="playback_video_div" style="display: none;">
-                  <p>Data: <span id="recording_date"></span> as <span id="recording_time"></span></p>
                   <video width="80%" height="100%" muted controls id="playback_video" allowfullscreen="false"></video>
                 </div>
               </div>

@@ -1,8 +1,11 @@
 import cv2
 from flask import Flask, render_template, request, Response
 from Utils import Utils
+from flask_ngrok import run_with_ngrok
+
 
 app = Flask(__name__, template_folder='templates', static_folder='templates/assets')
+#run_with_ngrok(app)
 
 def gen_frames():  
     camera = cv2.VideoCapture(0)
@@ -29,6 +32,7 @@ def chart_data():
     chart_data_path = Utils.getConfigData()['chart_data_path']
     try:
         data = Utils.readCSV(chart_data_path)
+        print(data)
     except:
         data = []
         print('Error: chart_data_path nao encontrado')
@@ -50,4 +54,4 @@ def set_config():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5001, debug=True)

@@ -24,6 +24,7 @@ class Utils:
     def readCSV(path):
         with open(path, 'r') as f:
             data = list(csv.DictReader(f))
+            print(json.dumps(data))
             return json.dumps(data)
 
 
