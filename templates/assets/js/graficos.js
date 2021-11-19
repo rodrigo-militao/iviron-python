@@ -29,7 +29,7 @@ $(document).ready(() => {
   $("#start_time_input").val(`${current_year}-${current_month}-01`)
   $("#end_time_input").val(`${current_year}-${current_month}-${new Date(current_year, current_month, 0).getDate().toString()}`)
 
-  $("input[name='chart_period']").on('change', function() {
+  $("#chart_period").on('change', function() {
     const valor = $(this).val()
     chart_filter_selected = valor
     if(chart_filter_selected == "hora") $("#filter_dia").show()
@@ -136,7 +136,6 @@ function render_count_chart (chart_type = 'bar'){
 
             chartEntradas[mes_index] = (isNaN(Number(chartEntradas[mes_index])) ? 0 : Number(chartEntradas[mes_index])) + Number(el.entrou)
             chartSaidas[mes_index] = (isNaN(Number(chartSaidas[mes_index])) ? 0 : Number(chartSaidas[mes_index])) + (Number(el.entrou) == 0  ? 1 : 0)
-            debugger
           })
 
         }

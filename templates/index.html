@@ -72,14 +72,15 @@
               <button id="relatorio-btn">Relatório</button>
             </div>
 
-            <div id="aovivo-div" style="margin: 16px 8px;">
+            <div id="aovivo-div" style="margin: 16px 8px; width: 800px;">
               <div id="live_video">
                 <img src="{{ url_for('video_feed') }}" width="100%" height="100%">
               </div>
             </div>
 
             <div id="relatorio-div" style="display: none;">
-              <div class="chart_options">
+              <div class="chart_options flex" style="align-items: center;">
+
                 <div class="flex chart_time align-center" style="margin: 16px 8px;">
                   <label for="start_time_input" style="margin-right: 8px;">De</label>
                   <input placeholder="dd-mm-yyyy" type="date" id="start_time_input" class="time_input"  />
@@ -88,7 +89,7 @@
                   <input placeholder="dd-mm-yyyy" type="date" id="end_time_input"  class="time_input"  />
                 </div>
 
-                <div class="flex chart_type" style="margin: 16px 0;">
+                <!-- <div class="flex chart_type" style="margin: 16px 0;">
                   <input type="radio" id="periodo_hora" name="chart_period" value="hora" checked="true">
                   <label for="periodo_hora">Hora</label>
                 
@@ -100,20 +101,7 @@
 
                   <input type="radio" id="periodo_ano" name="chart_period" value="ano">
                   <label for="periodo_ano">Ano</label>
-                </div>
-
-                <div id="filter_dia" class="" style="margin: 16px 8px;">
-                  <div style="margin: 16px 0;">
-                    <label for="dia_input" style="margin-right: 8px;">Visualização</label>
-                  </div>
-                  <div>
-                    <select id="dia_input">
-                      <option value="min">1 Minuto</option>
-                      <option value="half">30 Minutos</option>
-                      <option value="hour" selected>1 Hora</option>
-                    </select>
-                  </div>
-                </div>
+                </div> -->
 
                 <div class="flex chart_type" style="margin: 16px 0;">
                   <input type="radio" id="bar" name="chart_type" value="bar" checked="true">
@@ -123,11 +111,39 @@
                   <label for="line">Linha</label>
                 </div>
 
-                <div class="flex" style="margin: 8px;">
-                  <button id="update_chart">Atualizar</button>
+              </div>
+
+              <div  class="" style="margin: 16px 8px;">
+                <div style="margin: 16px 0;">
+                  <label for="dia_input" style="margin-right: 8px;">Visualização</label>
+                </div>
+                <div class="flex">
+                  <div>
+                    <select id="chart_period">
+                      <option value="hora">Hora</option>
+                      <option value="dia">Dia</option>
+                      <option value="mes">Mês</option>
+                      <option value="ano">Ano</option>
+                    </select>
+                  </div>
+
+                    <div id="filter_dia" style="margin-left: 20px;">
+                      <select id="dia_input">
+                        <option value="min">1 Minuto</option>
+                        <option value="half">30 Minutos</option>
+                        <option value="hour" selected>1 Hora</option>
+                      </select>
+                    </div>
+
                 </div>
               </div>
 
+              <div class="flex" style="margin: 8px;">
+                <button id="update_chart">Atualizar</button>
+                <button id="export_chart" style="margin-left: 20px;">Exportar</button>
+              </div>
+
+              
               <canvas id="myChart" width="200" height="100"></canvas>
 
             </div>
@@ -171,7 +187,7 @@
 
               </div>
 
-            <div id="playback_video_div">
+            <div id="playback_video_div" style="width: 500px;">
               <video width="100%" height="100%" muted controls id="playback_video" allowfullscreen="false"></video>
             </div>
 
