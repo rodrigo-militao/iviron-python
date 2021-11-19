@@ -67,15 +67,20 @@
       <div id="right" class="bordered">
         <!-- Começa tab contagem -->
           <div id="contagem" class="tab-page tab-initial">
-            <div>
-              <!--
-                <div class="camera_container">
-                  <video id="camera" autoplay class="camera"></video>
-                </div>
-              --> 
+            <div id="header-contagem" style="margin: 16px 8px;">
+              <button id="aovivo-btn" class="active">Ao vivo</button>
+              <button id="relatorio-btn">Relatório</button>
+            </div>
 
+            <div id="aovivo-div" style="margin: 16px 8px;">
+              <div id="live_video">
+                <img src="{{ url_for('video_feed') }}" width="100%" height="100%">
+              </div>
+            </div>
+
+            <div id="relatorio-div" style="display: none;">
               <div class="chart_options">
-                <div class="flex chart_time align-center"style="margin: 16px 8px;">
+                <div class="flex chart_time align-center" style="margin: 16px 8px;">
                   <label for="start_time_input" style="margin-right: 8px;">De</label>
                   <input placeholder="dd-mm-yyyy" type="date" id="start_time_input" class="time_input"  />
                   
@@ -103,9 +108,9 @@
                   </div>
                   <div>
                     <select id="dia_input">
-                      <option value="min" selected>1 Minuto</option>
+                      <option value="min">1 Minuto</option>
                       <option value="half">30 Minutos</option>
-                      <option value="hour">1 Hora</option>
+                      <option value="hour" selected>1 Hora</option>
                     </select>
                   </div>
                 </div>
@@ -131,51 +136,44 @@
 
         <!-- Começa tab gravacao -->
           <div id="gravacao" class="tab-page"  style="margin: 16px 8px;">
-            <div class="flex">
 
-              <div style="width: 60%">
-                <div id="live_video">
-                  <p>Ao vivo</p>
-                  <img src="{{ url_for('video_feed') }}" width="80%" height="100%">
+              <div id="container_pick_playback" style="margin: 16px 8px;">
+                <div>
+                  <span>Data</span>
                 </div>
-
-                <div id="playback_video_div" style="display: none;">
-                  <video width="80%" height="100%" muted controls id="playback_video" allowfullscreen="false"></video>
-                </div>
-              </div>
-              
-              <div>
-                <div style="margin: 16px 8px;" class="flex">
-                  <div style="margin-right: 8px;">
-                    <input type="date" placeholder="dd-mm-yyyy" id="playback_date" lang="pt-BR" />
+                <div class="flex" style="align-items: center;">
+                  <div style="margin-right: 20px;">
+                    <input type="number" min="1" step="1" max="31" id="day_playback_input" />
                   </div>
-    
+                  
+                  <div style="margin-right: 20px;">
+                    <input type="number" min="1" step="1" max="12" id="month_playback_input" />
+                  </div>
+                  
+                  <div>
+                    <input type="number" step="1" id="year_playback_input" />
+                  </div>
+                </div>
+
+                <div style="margin: 16px 0; align-items: center;" class="flex">
+                  <!-- <div style="margin-right: 8px;">
+                    <input type="date" placeholder="dd-mm-yyyy" id="playback_date" lang="pt-BR" />
+                  </div> -->
                   <div>
                     <input type="time" id="playback_time" step="60" value="07:00" min="00:00" max="23:59" />
                   </div>
+                  <div style="margin-left: 20px;">
+                    <button id="playback_btn">
+                      Reproduzir
+                    </button>
+                  </div>
                 </div>
 
-                <div style="margin: 16px 8px;" class="flex">
-                  <div style="margin-right: 8px;">
-                    <button id="ver_ao_vivo">Ver ao vivo</button>
-                  </div>
-    
-                  <div>
-                    <button id="ver_playback">Ver playback</button>
-                  </div>
-                </div>
               </div>
 
-
+            <div id="playback_video_div">
+              <video width="100%" height="100%" muted controls id="playback_video" allowfullscreen="false"></video>
             </div>
-
-            <!-- <div style="margin: 16px 8px;">
-              <p>Caminho do vídeo: </p>
-              <p id="path"></p>
-            </div>
-
-            <button id='assistir_video'>Assistir vídeo</button>
-            <button id='download_video'>Download do vídeo</button> -->
 
           </div>
         <!-- Termina tab gravacao -->

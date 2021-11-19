@@ -25,7 +25,7 @@ $(document).ready(() => {
   })
 
   $("#audiencia_export").on('click', function() {
-    htmlToCSV(new Date().toLocaleDateString() + "_audiencia.csv")
+    htmlToCSV(new Date().toLocaleDateString() + "_audiencia.xls")
   })
 
   
@@ -183,26 +183,26 @@ function render_table(columns)
         <th>Hora</th>
         <th>Categoria</th>
 
-        <th>Até 2 Seg</th>
-        <th>% Até 2 Seg</th>
+        <th>Ate 2 Seg</th>
+        <th>% Ate 2 Seg</th>
 
-        <th>Até 4 Seg</th>
-        <th>% Até 4 Seg</th>
+        <th>Ate 4 Seg</th>
+        <th>% Ate 4 Seg</th>
 
-        <th>Até 6 Seg</th>
-        <th>% Até 6 Seg</th>
+        <th>Ate 6 Seg</th>
+        <th>% Ate 6 Seg</th>
 
-        <th>Até 8 Seg</th>
-        <th>% Até 8 Seg</th>
+        <th>Ate 8 Seg</th>
+        <th>% Ate 8 Seg</th>
 
-        <th>Até 10 Seg</th>
-        <th>% Até 10 Seg</th>
+        <th>Ate 10 Seg</th>
+        <th>% Ate 10 Seg</th>
         
         <th>Mais de 10 Seg</th>
         <th>% Mais de 10 Seg</th>
 
         <th>Total Passagens</th>
-        <th>Tempo Médio</th>
+        <th>Tempo Medio</th>
       </tr>
     </thead>
     <tbody>

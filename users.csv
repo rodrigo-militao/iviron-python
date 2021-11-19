@@ -1,4 +1,4 @@
-,id,username,password,is_active
-1,1,adm,adm,True
-2,2,igor,123,True
-3,3,paulo,123,True
+,id,username,password
+1,1,adm,adm
+2,2,igor,123
+3,3,paulo,123

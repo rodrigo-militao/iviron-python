@@ -1,16 +1,14 @@
 $(document).ready(() => {
 
-  $("#playback_date").val(new Date().toISOString().split('T')[0])
+  //$("#playback_date").val(new Date().toISOString().split('T')[0])
 
+  const today = new Date()
+  $("#day_playback_input").val(today.getDate())
+  $("#month_playback_input").val(today.getMonth() + 1)
+  $("#year_playback_input").val(today.getFullYear())
   
-  $("#ver_ao_vivo").on('click', function() {
-    $("#playback_video_div").hide()
-    $("#live_video").show()
-  })
-  $("#ver_playback").on('click', function() {
-    $("#live_video").hide()
+  $("#playback_btn").on('click', function() {
     change_playback_src()
-    $("#playback_video_div").show()
   })
 
   function change_playback_src() {
@@ -21,16 +19,17 @@ $(document).ready(() => {
     const selected_time = $("#playback_time").val()
     const playback_video = document.getElementById('playback_video')
 
-    const day = selected_date.split('-')[2]
-    const month = selected_date.split('-')[1]
-    const year = selected_date.split('-')[0]
+    const day = $("#day_playback_input").val()
+    const month = $("#month_playback_input").val()
+    const year = $("#year_playback_input").val()
+
     const hour = selected_time.split(":")[0]
     const minute = selected_time.split(":")[1]
     const first_minute_number = minute[0] >= 3 ? 3 : 0
     const video_current_time = Number(minute) >= 30 ? (Number(minute) - 30) * 60 : Number(minute) * 60;
     
-    
     const video_path = `/${video_path_static}/${year}-${month}-${day}-${hour}${minute}.${video_extension}`
+    console.log(video_path)
     playback_video.src = video_path
     playback_video.type = `video/${video_extension}`
     playback_video.load()

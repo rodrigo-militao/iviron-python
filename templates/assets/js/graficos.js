@@ -1,6 +1,6 @@
 let chart_type_selected = 'bar'
 let chart_filter_selected = 'hora'
-let chart_filter_dia_selected = 'min'
+let chart_filter_dia_selected = 'hour'
 var count_chart
 
   
@@ -9,6 +9,22 @@ $(document).ready(() => {
   const today = new Date().toLocaleDateString()
   const current_month = today.split('/')[1]
   const current_year = today.split('/')[2]
+
+  $("#aovivo-btn").on('click', function() {
+    $("#aovivo-btn").addClass("active")
+    $("#relatorio-btn").removeClass("active")
+
+    $("#relatorio-div").hide()
+    $("#aovivo-div").show()
+  })
+
+  $("#relatorio-btn").on('click', function() {
+    $("#relatorio-btn").addClass("active")
+    $("#aovivo-btn").removeClass("active")
+
+    $("#aovivo-div").hide()
+    $("#relatorio-div").show()
+  })
 
   $("#start_time_input").val(`${current_year}-${current_month}-01`)
   $("#end_time_input").val(`${current_year}-${current_month}-${new Date(current_year, current_month, 0).getDate().toString()}`)

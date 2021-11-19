@@ -31,13 +31,14 @@
                 Logar
             </button>
         </form>
-       <!--  <div>
-            <% if (message) { %>
+       <div>
+            {% if message %}
                 <p style="color: red;">
-                    <%= message %>
+                    {{message}}
                 </p>
-            <% } %>
-        </div> -->
+            {% endif %}
+                
+        </div>
 
     </center>
 
