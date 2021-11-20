@@ -5,9 +5,10 @@ function s2ab(s) {
 	return buf;
   }
 
-function htmlToCSV(filename) {
+function htmlToCSV(filename, table_id) {
 	var data = [];
-	var rows = document.querySelectorAll("#audiencia_table tr");
+	//audiencia_table
+	var rows = document.querySelectorAll(`#${table_id} tr`);
 			
 	for (var i = 0; i < rows.length; i++) {
 		var row = [], cols = rows[i].querySelectorAll("td, th");

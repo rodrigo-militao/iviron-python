@@ -25,7 +25,7 @@ $(document).ready(() => {
   })
 
   $("#audiencia_export").on('click', function() {
-    htmlToCSV(new Date().toLocaleDateString() + "_audiencia.xls")
+    htmlToCSV(new Date().toLocaleDateString() + "_audiencia.xls", "audiencia_table")
   })
 
   

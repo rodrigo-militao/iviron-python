@@ -54,6 +54,10 @@ $(document).ready(() => {
     //change_chart_config_file(file_path)
   })
 
+  $("#export_chart").on('click', function() {
+    htmlToCSV(new Date().toLocaleDateString() + "_grafico_contagem.xls", "chart_table")
+  })
+
 
   $(".time_input").on('change', () => {
     render_count_chart(chart_type_selected)
@@ -309,4 +313,26 @@ function render_chart({
           },
       }
   })
+  const table_rows = chartLabels.map((e, index) => (
+    `
+    <tr class='chart_table_row'>
+      <td>${e}</td>
+      <td>${chartEntradas[index]}</td>
+      <td>${chartSaidas[index]}</td>
+    </tr>
+    `
+    )).join("")
+
+  $("#chart_table").html(`
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Entradas</th>
+        <th>Saidas</th>
+      </tr>
+    </thead>
+    <tbody>
+        ${table_rows}
+    </tbody>
+  `)
 }
