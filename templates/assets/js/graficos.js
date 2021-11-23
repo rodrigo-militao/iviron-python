@@ -1,7 +1,10 @@
 let chart_type_selected = 'bar'
 let chart_filter_selected = 'hora'
 let chart_filter_dia_selected = 'hour'
+let filtered_by_date_interval = []
 var count_chart
+const rtgl_chart_list = []
+
 
   
 $(document).ready(() => {
@@ -48,26 +51,23 @@ $(document).ready(() => {
     render_count_chart(chart_type_selected)
   })
 
-  $("#config_chart_file_input").on('change', function() {
-    const file_path = this.files[0].path
-    console.log( this.files[0])
-    //change_chart_config_file(file_path)
-  })
-
   $("#export_chart").on('click', function() {
     htmlToCSV(new Date().toLocaleDateString() + "_grafico_contagem.xls", "chart_table")
   })
 
 
   $(".time_input").on('change', () => {
+    start_chart_session()
     render_count_chart(chart_type_selected)
   })
 
   $("#update_chart").on('click', () => {
+    start_chart_session()
     render_count_chart(chart_type_selected)
   })
 
   render_count_chart()
+  start_chart_session()
 
 })
 
@@ -87,6 +87,38 @@ function formatTime(full_date) {
   return time
 }
 
+function start_chart_session() {
+  fetch(`/chart_data`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+      },
+    }).then(res => res.json())
+      .then(results => {
+        filtered_by_date_interval = results.filter(e => e.forma == "reta").filter(e => isBetweenDates(new Date(e["dia-horario"])))
+        filtered_by_date_interval.map(e => {
+          if(!rtgl_chart_list.find(el => el.id_forma == e.id_forma)) {
+            rtgl_chart_list.push({
+              id_forma: e.id_forma,
+              desc_forma: e.desc_forma
+            })
+          }
+        })
+      
+        $("#chart_select").empty()
+        $("#chart_select").append(`<option value="0">Selecione o setor</option>`)
+        $("#chart_select").append( rtgl_chart_list.map(el => `<option value="${el.id_forma}">${el.id_forma} - ${el.desc_forma}</option>`).join("") )
+      
+        $("#chart_select").on('change', function() {
+          filtered_by_date_interval = filtered_by_date_interval.filter(e => e.id_forma == $("#chart_select").val())
+          render_count_chart(chart_type_selected)
+        })
+      })
+          
+
+
+}
+
 
 function render_count_chart (chart_type = 'bar'){
   const chartLabels = []
@@ -94,23 +126,18 @@ function render_count_chart (chart_type = 'bar'){
   const chartSaidas = []
   let defined_x_axes = []
 
-  //se o gráfico já existe, retira e cria novamente.
-  if (count_chart != undefined || count_chart !=null) {
-    count_chart.destroy()
-  }
-
-
-  fetch(`/chart_data`, {
+  /* fetch(`/chart_data`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
       },
     }).then(res => res.json())
-    .then(results => {
+    .then(results => { */
     new Promise((resolve, reject) =>  {
-        const data = results
+        const data = filtered_by_date_interval
+        console.log(data)
         
-        const filtered_by_date_interval = data.filter(e => e.forma == "reta").filter(e => isBetweenDates(new Date(e["dia-horario"])))
+        filtered_by_date_interval = data.filter(e => e.forma == "reta").filter(e => isBetweenDates(new Date(e["dia-horario"])))
 
         if (chart_filter_selected == 'ano') {
           $("select[id='dia_input']").css('display', 'none')
@@ -216,7 +243,7 @@ function render_count_chart (chart_type = 'bar'){
     );
 
 
-  });
+  //});
 
 
 }
@@ -248,6 +275,11 @@ function render_chart({
   chartEntradas,
   chartSaidas,
 }) {
+    //se o gráfico já existe, retira e cria novamente.
+    if (count_chart != undefined || count_chart !=null) {
+      count_chart.destroy()
+    }
+  
   const ctx = document.getElementById('myChart').getContext('2d')
   count_chart = new Chart(ctx, {
       type: chart_type,
@@ -287,8 +319,8 @@ function render_chart({
                   type:"category",
                   ticks:{
                     callback:function(label){
-                      var date = label.split(" - ")[0]
-                      var time = label.split(" - ")[1]
+                      label = label.toString()
+                      var time = label.split(" - ")[1] || label
                       return time;
                     }
                   }
@@ -301,8 +333,8 @@ function render_chart({
                   },
                   ticks:{
                     callback:function(label){
-                      var date = label.split(" - ")[0]
-                      var time = label.split(" - ")[1]
+                      label = label.toString()
+                      var date = label.split(" - ")[0] || label
                       return date
                     }
                   },
